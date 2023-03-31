@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<!-- Load TensorFlow.js. This is required to use MobileNet. -->
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.0.1"> </script>
+<!-- Load the MobileNet model. -->
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet@1.0.0"> </script>
+
+<input type="file" id="upload"/>
+<label for="upload">Choose file</label>
+<body></body>
+<script>
+  var imagePreview = document.createElement("img");
+  mobilenet.load().then(model => {
+      var inputDiv = document.getElementById("upload");
+      inputDiv.addEventListener("change", (e) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(inputDiv.files[0]);
+      reader.addEventListener("load", function () {
+        imagePreview.src = reader.result;
+        imagePreview.onload = function() {
+          model.classify(imagePreview).then(predictions => {
+            var isOrange = false;
+            for( var i = 0; i < predictions.length; i++ ) {
+              if( predictions[ i ].className == "orange" && predictions[ i ].probability > 0.3 ) {
+                isOrange = true;
+              }
+            }
+            if( isOrange ) {
+              alert( "Probably an orange" );
+            } else {
+              alert( "Probably not an orange" );
+            }
+          });
+        }
+      })
+    })
+  });
+</script>
