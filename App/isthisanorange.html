@@ -4,9 +4,13 @@
 <!-- Load the MobileNet model. -->
 <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet@1.0.0"> </script>
 
-<input type="file" id="upload"/>
-<label for="upload">Choose file</label>
-<body></body>
+<body>
+    <div class="vbox">
+      <input type="file" id="upload"/>
+      <div id="message"></div>
+    </div>
+</body>
+
 <script>
   var imagePreview = document.createElement("img");
   mobilenet.load().then(model => {
@@ -25,9 +29,9 @@
               }
             }
             if( isOrange ) {
-              alert( "Probably an orange" );
+                document.getElementById("message").textContent = "Probably an orange";
             } else {
-              alert( "Probably not an orange" );
+                document.getElementById("message").textContent = "Probably not an orange";
             }
           });
         }
@@ -43,6 +47,13 @@
         justify-content: center;
         height: 100vh;
         background-color: #e6ae7d;
+    }
+
+    .vbox {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     }
 
     label, input {
